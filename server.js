@@ -1,8 +1,8 @@
-const dgram = require('dgram');
-const server = dgram.createSocket('udp4');
+import dgram from 'dgram';
+import { joinRoom, updatePlayer } from './rooms/roomManager.js';
 
 const PORT = 41234;
-const clients = new Set();
+const server = dgram.createSocket('udp4');
 
 server.on('listening', () => {
     const address = server.address();
@@ -10,18 +10,29 @@ server.on('listening', () => {
 });
 
 server.on('message', (msg, rinfo) => {
-    const clientId = `${rinfo.address}:${rinfo.port}`;
-    clients.add(clientId);
+    try {
+        const str = msg.toString('utf8');  // Преобразуем buffer в строку
 
-    console.log(`Сообщение от ${clientId}: ${msg}`);
+        const data = JSON.parse(str);
+        const playerIPAndPortInfo = `${rinfo.address}:${rinfo.port}`;
 
-    // Рассылаем всем кроме отправителя
-    clients.forEach((id) => {
-        if (id !== clientId) {
-            const [ip, port] = id.split(':');
-            server.send(msg, parseInt(port), ip);
+        switch (data.type) {
+            case 'join':
+                joinRoom({
+                    roomId: data?.roomId,
+                    playerData: data?.playerData,
+                    server,
+                    playerIPAndPortInfo,
+                });
+                break;
+            case 'update':
+                updatePlayer(playerIPAndPortInfo, data?.playerData, server);
+                break;
         }
-    });
+    }catch (e) {
+        console.error('Ошибка обработки сообщения:', e);
+        console.error('📦 Исходные данные:', msg.toString('utf8'));
+    }
 });
 
 server.bind(PORT);
