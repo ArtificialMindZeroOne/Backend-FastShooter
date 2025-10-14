@@ -8,7 +8,7 @@ const server = dgram.createSocket('udp4');
 const playerTimeouts = new Map();
 
 function updatePlayerActivity(playerIPAndPortInfo, playerID) {
-    console.log('ПОЯВЛЕНИЕ ИГРОКА!!!!', playerTimeouts)
+
     // Сбрасываем старый таймер
     if (playerTimeouts.has(playerIPAndPortInfo)) {
         clearTimeout(playerTimeouts.get(playerIPAndPortInfo).timeout);
@@ -36,7 +36,7 @@ server.on('message', (msg, rinfo) => {
         const playerIPAndPortInfo = `${rinfo.address}:${rinfo.port}`;
         const playerID = JSON.parse(msg?.toString('utf8'))?.playerData?.id;
 
-        console.log('playerID', playerID)
+
         // Обновляем активность игрока при ЛЮБОМ сообщении
         updatePlayerActivity(playerIPAndPortInfo, playerID);
 
@@ -49,7 +49,7 @@ server.on('message', (msg, rinfo) => {
                 });
                 break;
             case 'update':
-                updatePlayer(playerIPAndPortInfo, data?.playerData, data?.packNumber, server, playerID);
+                updatePlayer(playerIPAndPortInfo, data?.playerData, data?.packNumber, server, data);
                 break;
             case 'shootData':
                 updateShootData(playerIPAndPortInfo, data?.bulletData, server);

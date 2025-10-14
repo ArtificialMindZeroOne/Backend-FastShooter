@@ -94,9 +94,8 @@ export function joinRoom({playerData, server, playerIPAndPortInfo}) {
 
 
 ////// 2) UPDATE
-export function updatePlayer(playerIPAndPortInfo, playerData, packNumber, server, playerOldID) {
-    console.log('rooms', rooms)
-    console.log('Получаем отсюда', playerIPAndPortInfo)
+export function updatePlayer(playerIPAndPortInfo, playerData, packNumber, server, data) {
+
 
     if (!playerIPAndPortInfo) return;
 
@@ -146,24 +145,18 @@ export function updatePlayer(playerIPAndPortInfo, playerData, packNumber, server
                         roomId,
                         player: other,
                         roomStatus: room.status,
-                        data1: playerData?.data1 ?? 0,
-                        data2: playerData?.data2 ?? 0,
-                        data3: playerData?.data3 ?? 0,
-                        data4: playerData?.data4 ?? 0,
-                        data5: playerData?.data5 ?? 0,
-                        data6: playerData?.data6 ?? 0,
-                        data7: playerData?.data7 ?? 0,
-                        data8: playerData?.data8 ?? 0,
-                        data9: playerData?.data9 ?? 0,
-                        data10: playerData?.data10 ?? 0,
+                        data1: data?.data1 ?? 0,
+                        data2: data?.data2 ?? 0,
+                        data3: data?.data3 ?? 0,
+                        data4: data?.data4 ?? 0,
+                        data5: data?.data5 ?? 0,
+                        data6: data?.data6 ?? 0,
+                        data7: data?.data7 ?? 0,
+                        data8: data?.data8 ?? 0,
+                        data9: data?.data9 ?? 0,
+                        data10: data?.data10 ?? 0,
                     }
-
-                    if (other.id !== playerOldID) {
                         server.send(JSON.stringify(res), parseInt(port), ip);
-                    }
-
-                    console.log('Отправляем сюда: ', `${ip + parseInt(port)}`)
-                    console.log('-------------')
                 }
             }
         }
