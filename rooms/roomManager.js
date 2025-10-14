@@ -145,10 +145,20 @@ export function updatePlayer(playerIPAndPortInfo, playerData, packNumber, server
                         type: 'update',
                         roomId,
                         player: other,
-                        roomStatus: room.status
+                        roomStatus: room.status,
+                        data1: playerData?.data1 ?? 0,
+                        data2: playerData?.data2 ?? 0,
+                        data3: playerData?.data3 ?? 0,
+                        data4: playerData?.data4 ?? 0,
+                        data5: playerData?.data5 ?? 0,
+                        data6: playerData?.data6 ?? 0,
+                        data7: playerData?.data7 ?? 0,
+                        data8: playerData?.data8 ?? 0,
+                        data9: playerData?.data9 ?? 0,
+                        data10: playerData?.data10 ?? 0,
                     }
 
-                    if (other.id === playerOldID) {
+                    if (other.id !== playerOldID) {
                         server.send(JSON.stringify(res), parseInt(port), ip);
                     }
 

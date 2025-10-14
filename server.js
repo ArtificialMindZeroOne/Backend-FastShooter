@@ -19,7 +19,7 @@ function updatePlayerActivity(playerIPAndPortInfo, playerID) {
         console.log(`⏰ Таймаут для игрока ${playerIPAndPortInfo}`);
         removePlayer(playerIPAndPortInfo, server, playerID);
         playerTimeouts.delete(playerIPAndPortInfo);
-    }, 1000);
+    }, 5000);
 
     playerTimeouts.set(playerIPAndPortInfo, {timeout, playerID});
 }
